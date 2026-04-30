@@ -8,8 +8,10 @@ const CSVAnalyzer = () => {
 
   return (
     <div className="space-y-4">
-      <Dropzone onFileSelected={setFile} />
-      {file && <p>Selected file: {file.name}</p>}
+      <Dropzone
+        file={file}
+        onFileSelected={setFile}
+      />
     </div>
   )
 }

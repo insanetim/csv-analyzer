@@ -6,12 +6,11 @@ import { Button } from "./ui/button"
 import { Card } from "./ui/card"
 
 interface DropzoneProps {
+  file: File | null
   onFileSelected: (file: File) => void
 }
 
-const Dropzone: React.FC<DropzoneProps> = ({
-  onFileSelected: onFileChange,
-}) => {
+const Dropzone: React.FC<DropzoneProps> = ({ file, onFileSelected }) => {
   const [isDragging, setIsDragging] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -48,7 +47,7 @@ const Dropzone: React.FC<DropzoneProps> = ({
       return
     }
 
-    onFileChange(selectedFile)
+    onFileSelected(selectedFile)
   }
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -60,10 +59,9 @@ const Dropzone: React.FC<DropzoneProps> = ({
   return (
     <Card
       className={cn(
-        "max-w-2xl mx-auto p-6, border-2 border-dashed transition cursor-pointer",
+        "max-w-2xl mx-auto p-6 border-2 border-dashed transition",
         isDragging ? "border-primary bg-muted" : "border-muted-foreground/30"
       )}
-      onClick={() => inputRef.current?.click()}
       onDragOver={e => {
         e.preventDefault()
         setIsDragging(true)
@@ -78,19 +76,27 @@ const Dropzone: React.FC<DropzoneProps> = ({
         accept=".csv,text/csv"
         onChange={e => handleFiles(e.target.files)}
       />
-      <div className="text-center space-y-2">
-        <p className="text-sm text-muted-foreground">
-          Drag & drop CSV file here, or click to select
-        </p>
+      <div className="text-center space-y-4">
+        <div className="flex items-center justify-center gap-4">
+          {file ? (
+            <p className="text-sm truncate">{file.name}</p>
+          ) : (
+            <p className="text-sm text-muted-foreground">
+              Drop CSV file here or
+            </p>
+          )}
 
-        <Button
-          type="button"
-          variant="secondary"
-        >
-          Choose CSV file
-        </Button>
+          <Button
+            className="cursor-pointer"
+            type="button"
+            variant="secondary"
+            onClick={() => inputRef.current?.click()}
+          >
+            {file ? "Select another" : "Click to select"}
+          </Button>
+        </div>
 
-        {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
+        {error && <p className="text-sm text-red-500">{error}</p>}
       </div>
     </Card>
   )
