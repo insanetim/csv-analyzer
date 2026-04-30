@@ -1,9 +1,5 @@
-import Dropzone from "@/components/Dropzone"
+import CSVAnalyzer from "@/components/CSVAnalyzer"
 
 export default function Home() {
-  return (
-    <div>
-      <Dropzone />
-    </div>
-  )
+  return <CSVAnalyzer />
 }

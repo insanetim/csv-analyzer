@@ -5,12 +5,17 @@ import { useRef, useState } from "react"
 import { Button } from "./ui/button"
 import { Card } from "./ui/card"
 
-const Dropzone = () => {
-  const inputRef = useRef<HTMLInputElement | null>(null)
+interface DropzoneProps {
+  onFileSelected: (file: File) => void
+}
 
-  const [file, setFile] = useState<File | null>(null)
+const Dropzone: React.FC<DropzoneProps> = ({
+  onFileSelected: onFileChange,
+}) => {
   const [isDragging, setIsDragging] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  const inputRef = useRef<HTMLInputElement | null>(null)
 
   const validateFile = (file: File) => {
     const isCSV =
@@ -43,7 +48,7 @@ const Dropzone = () => {
       return
     }
 
-    setFile(selectedFile)
+    onFileChange(selectedFile)
   }
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -55,7 +60,7 @@ const Dropzone = () => {
   return (
     <Card
       className={cn(
-        "p-6, border-2 border-dashed transition cursor-pointer",
+        "max-w-2xl mx-auto p-6, border-2 border-dashed transition cursor-pointer",
         isDragging ? "border-primary bg-muted" : "border-muted-foreground/30"
       )}
       onClick={() => inputRef.current?.click()}
@@ -84,12 +89,6 @@ const Dropzone = () => {
         >
           Choose CSV file
         </Button>
-
-        {file && (
-          <p className="text-sm mt-2">
-            Selected: <span className="font-medium">{file.name}</span>
-          </p>
-        )}
 
         {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
       </div>

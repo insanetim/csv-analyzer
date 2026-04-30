@@ -1,3 +1,5 @@
+import Container from "@/components/Container"
+import Header from "@/components/Header"
 import { cn } from "@/lib/utils"
 import type { Metadata } from "next"
 import { Geist } from "next/font/google"
@@ -28,7 +30,8 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col">
-        <div className="max-w-6xl w-full mx-auto py-8 px-4">{children}</div>
+        <Header />
+        <Container className="py-4">{children}</Container>
       </body>
     </html>
   )
