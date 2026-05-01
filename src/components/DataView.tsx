@@ -2,6 +2,7 @@
 
 import { CSVData } from "@/types"
 import { useState } from "react"
+import { useDebounceValue } from "usehooks-ts"
 import DataControls from "./DataControls"
 import DataTable from "./DataTable"
 import SummaryCards from "./SummaryCards"
@@ -15,6 +16,8 @@ interface DataViewProps {
 const DataView: React.FC<DataViewProps> = ({ data }) => {
   const [searchTerm, setSearchTerm] = useState("")
   const [filterType, setFilterType] = useState<FilterType>("all")
+
+  const [debouncedSearchTerm] = useDebounceValue(searchTerm, 500)
 
   return (
     <div className="space-y-4">
@@ -32,7 +35,7 @@ const DataView: React.FC<DataViewProps> = ({ data }) => {
       {/* Table */}
       <DataTable
         data={data}
-        searchTerm={searchTerm}
+        searchTerm={debouncedSearchTerm}
         filterType={filterType}
       />
     </div>
