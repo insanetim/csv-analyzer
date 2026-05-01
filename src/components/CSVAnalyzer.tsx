@@ -3,6 +3,7 @@
 import { parseCsv, validateRows } from "@/lib/getParsedData"
 import { CSVData, InvalidRow } from "@/types"
 import { useCallback, useEffect, useState } from "react"
+import DataView from "./DataView"
 import Dropzone from "./Dropzone"
 import InvalidRows from "./InvalidRows"
 import { Alert, AlertDescription } from "./ui/alert"
@@ -54,6 +55,8 @@ const CSVAnalyzer = () => {
         </AlertDescription>
       </Alert>
     )
+  } else if (file && validRows.length > 0) {
+    content = <DataView data={validRows} />
   }
 
   return (
